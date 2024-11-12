@@ -1,5 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+
+load_dotenv()
 
 # user_input = input("Which year do you want to travel to? Type the date in this format YYYY-MM-DD:: ")
 
@@ -14,4 +19,28 @@ website_html = response.text
 
 soup = BeautifulSoup(website_html, "html.parser")
 
-print(soup.prettify())
+song_names_spans = soup.select("li ul li h3")
+song_names = [song.getText().strip() for song in song_names_spans]
+
+sp = spotipy.Spotify(
+    auth_manager=SpotifyOAuth(
+        scope="playlist-modify-private",
+        redirect_uri="SPOTIPY_REDIRECT_URI=",
+        client_id="SPOTIPY_CLIENT_ID",
+        client_secret="SPOTIPY_CLIENT_SECRET",
+        cache_path="token.txt",
+    )
+)
+user_id = sp.current_user()["id"]
+print(user_id)
+
+#FIX: Illegal URL
+
+# scope = "user-library-read"
+
+# sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+
+# results = sp.current_user_saved_tracks()
+# for idx, item in enumerate(results['items']):
+#     track = item['track']
+#     print(idx, track['artists'][0]['name'], " – ", track['name'])
