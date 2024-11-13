@@ -6,6 +6,8 @@ Choose the name you want and "Web API". Once created, copy the client ID and cli
 
 Use "http://example.com" as the redirect URL in your app.
 
+The first time you run the script, it will ask you to paste the url you were redirected to. Do it and click enter. It will create then a token.txt file and you can run the script again.
+
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
