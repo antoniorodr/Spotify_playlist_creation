@@ -7,12 +7,11 @@ import os
 
 load_dotenv()
 
-# user_input = input("Which year do you want to travel to? Type the date in this format YYYY-MM-DD:: ")
+date = input("Which year do you want to travel to? Type the date in this format YYYY-MM-DD:: ")
 
 header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:131.0) Gecko/20100101 Firefox/131.0"}
 
-# URL = f"https://www.billboard.com/charts/hot-100/{user_input}/"
-URL = "https://www.billboard.com/charts/hot-100/2024-08-03/"
+URL = f"https://www.billboard.com/charts/hot-100/{date}/"
 
 
 response = requests.get(URL, headers = header)
@@ -35,3 +34,14 @@ sp = spotipy.Spotify(
     )
 )
 user_id = sp.current_user()["id"]
+
+song_uris = []
+year = date.split("-")[0]
+for song in song_names:
+    result = sp.search(q=f"track:{song} year:{year}", type="track")
+    print(result)
+    try:
+        uri = result["tracks"]["items"][0]["uri"]
+        song_uris.append(uri)
+    except IndexError:
+        print(f"{song} doesn't exist in Spotify. Skipped.")
