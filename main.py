@@ -28,7 +28,9 @@ sp = spotipy.Spotify(
         redirect_uri="SPOTIPY_REDIRECT_URI=",
         client_id="SPOTIPY_CLIENT_ID",
         client_secret="SPOTIPY_CLIENT_SECRET",
+        show_dialog=True,
         cache_path="token.txt",
+        username="SPOTIFY_NAME",
     )
 )
 user_id = sp.current_user()["id"]
