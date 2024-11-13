@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+import os
 
 load_dotenv()
 
@@ -25,24 +26,12 @@ song_names = [song.getText().strip() for song in song_names_spans]
 sp = spotipy.Spotify(
     auth_manager=SpotifyOAuth(
         scope="playlist-modify-private",
-        redirect_uri="SPOTIPY_REDIRECT_URI=",
-        client_id="SPOTIPY_CLIENT_ID",
-        client_secret="SPOTIPY_CLIENT_SECRET",
+        redirect_uri=os.environ["SPOTIPY_REDIRECT_URI"],
+        client_id=os.environ["SPOTIPY_CLIENT_ID"],
+        client_secret=os.environ["SPOTIPY_CLIENT_SECRET"],
         show_dialog=True,
         cache_path="token.txt",
-        username="SPOTIFY_NAME",
+        username=os.environ["SPOTIFY_NAME"],
     )
 )
 user_id = sp.current_user()["id"]
-print(user_id)
-
-#FIX: Illegal URL
-
-# scope = "user-library-read"
-
-# sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
-
-# results = sp.current_user_saved_tracks()
-# for idx, item in enumerate(results['items']):
-#     track = item['track']
-#     print(idx, track['artists'][0]['name'], " – ", track['name'])
